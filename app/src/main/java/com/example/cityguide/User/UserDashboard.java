@@ -7,6 +7,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.cityguide.Common.LoginSignup.RetailerStartUpScreen;
 import com.example.cityguide.HelperClasses.HomeAdapter.CategoriesAdapter;
 import com.example.cityguide.HelperClasses.HomeAdapter.CategoriesHelperClass;
 import com.example.cityguide.HelperClasses.HomeAdapter.FeaturedAdapter;
@@ -102,18 +104,18 @@ public class UserDashboard extends AppCompatActivity implements NavigationView.O
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.nav_all_categories:
+                Intent intent = new Intent(getApplicationContext(), AllCategories.class);
+                startActivity(intent);
+                break;
+
+        }
+
         return true;
     }
 
@@ -169,6 +171,22 @@ public class UserDashboard extends AppCompatActivity implements NavigationView.O
 
 
     }
+
+
+    public void callRetailerScreen(View view) {
+        startActivity(new Intent(getApplicationContext(), RetailerStartUpScreen.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
 
 
 }

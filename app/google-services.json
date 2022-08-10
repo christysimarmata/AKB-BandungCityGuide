@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "140169736951",
+    "project_id": "bandung-city-guide-49d00",
+    "storage_bucket": "bandung-city-guide-49d00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140169736951:android:bb335eba1e2a91279e99f2",
+        "android_client_info": {
+          "package_name": "com.example.cityguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "140169736951-eb2i7c7rdv5cg29eb00vqpiir9gr8nh0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_BXAMv4W6LV_TSbGxZdOMOuM2C_EsJc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "140169736951-eb2i7c7rdv5cg29eb00vqpiir9gr8nh0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
