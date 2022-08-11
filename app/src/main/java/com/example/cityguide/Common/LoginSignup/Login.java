@@ -1,14 +1,24 @@
 package com.example.cityguide.Common.LoginSignup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.cityguide.Database.CheckInternet;
+import com.example.cityguide.Database.SessionManager;
+import com.example.cityguide.LocationOwner.RetailerDashboard;
 import com.example.cityguide.R;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -56,11 +66,17 @@ public class Login extends AppCompatActivity {
     }
 
     public void userLogin(View view) {
+
+        CheckInternet checkInternet = new CheckInternet();
+        if(!checkInternet.isConnected(this)) {
+            showCustomDialog();
+            return;
+        }
+
         if (!validateFields()) {
             return;
         }
 
-       // Toast.makeText(Login.this, "Test sampai sini", Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.VISIBLE);
 
         String _phoneNumber = phoneNumber.getEditText().getText().toString().trim();
@@ -85,7 +101,9 @@ public class Login extends AppCompatActivity {
                         String _phone_number = snapshot.child(_phoneNumber).child("phone_number").getValue(String.class);
                         String _password = snapshot.child(_phoneNumber).child("password").getValue(String.class);
 
-                        Toast.makeText(Login.this, _fullname + "\n" + _username + "\n" + _email + "\n" + _phone_number + "\n" + _password, Toast.LENGTH_SHORT).show();
+                        SessionManager sessionManager = new SessionManager(Login.this);
+                        sessionManager.createLoginSession(_fullname, _username, _email, _phone_number, _password);
+                        startActivity(new Intent(getApplicationContext(), RetailerDashboard.class));
                     } else {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(Login.this, "Password does not match.", Toast.LENGTH_SHORT).show();
@@ -105,4 +123,30 @@ public class Login extends AppCompatActivity {
     }
 
 
+    private void showCustomDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+        builder.setMessage("Please connect to the internet to proceed further")
+                .setCancelable(false)
+                .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(getApplicationContext(), RetailerStartUpScreen.class));
+                        finish();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    public void callForgetPassword(View view) {
+        startActivity(new Intent(getApplicationContext(), ForgetPassword.class));
+    }
 }

@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,7 @@ public class VerifyOTP extends AppCompatActivity {
     String codeBySistem;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    String phoneNumber, fullname, username, email, password;
+    String phoneNumber, fullname, username, email, password, whatToDo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class VerifyOTP extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
+        whatToDo = getIntent().getStringExtra("whatToDo");
 
         sendVerificationCode(phoneNumber);
     }
@@ -100,8 +102,13 @@ public class VerifyOTP extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            storeNewUsersData();
-                            Toast.makeText(VerifyOTP.this, "Verification Success.", Toast.LENGTH_SHORT).show();
+                            if(whatToDo.equals("updateData")) {
+                                updateOldUserData();
+                            } else {
+                                storeNewUsersData();
+                                Toast.makeText(VerifyOTP.this, "Verification Success.", Toast.LENGTH_SHORT).show();
+                            }
+
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(VerifyOTP.this, "Verification Not Completed! Try again.", Toast.LENGTH_SHORT).show();
@@ -109,6 +116,13 @@ public class VerifyOTP extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void updateOldUserData() {
+        Intent intent = new Intent(getApplicationContext(), SetNewPassword.class);
+        intent.putExtra("phoneNumber", phoneNumber);
+        startActivity(intent);
+        finish();
     }
 
     private void storeNewUsersData() {

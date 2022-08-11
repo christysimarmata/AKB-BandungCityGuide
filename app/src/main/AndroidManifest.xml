@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CityGuide">
         <activity
+            android:name=".LocationOwner.RetailerDashboard"
+            android:exported="false" />
+        <activity
             android:name=".Common.LoginSignup.ForgetPasswordSuccessMessage"
             android:exported="false" />
         <activity
             android:name=".Common.LoginSignup.SetNewPassword"
-            android:exported="false" />
-        <activity
-            android:name=".Common.LoginSignup.ForgetPasswordSelection"
             android:exported="false" />
         <activity
             android:name=".Common.LoginSignup.ForgetPassword"
